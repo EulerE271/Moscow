@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
-	"strconv" // Import strconv package for string conversion
-
 	"russianwords/emailer"
+	"strconv" // Import strconv package for string conversion
 )
 
 func SendGlossaryHandler(w http.ResponseWriter, r *http.Request) {
@@ -34,6 +34,10 @@ func SendGlossaryHandler(w http.ResponseWriter, r *http.Request) {
 	// Trigger the function to send the email with the glossary to the user's email.
 	err = emailer.SendGlossary(request.Email, glossaryCount) // Pass integer value here
 	if err != nil {
+		// Log the error message
+		log.Printf("Error sending glossary: %v\n", err)
+
+		// Send an HTTP error response
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

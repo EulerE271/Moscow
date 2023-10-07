@@ -49,7 +49,7 @@ func SendMail(from string, password string, to []string, subject string, body st
 
 	// Send the email body
 	headers := make(map[string]string)
-	headers["From"] = from
+	headers["From"] = "noreply@glossaryru.com"
 	headers["To"] = to[0] // assuming you're sending to one recipient for simplicity; adjust if needed
 	headers["Subject"] = subject
 	headers["MIME-version"] = "1.0"

@@ -6,5 +6,5 @@ import (
 )
 
 func SetupRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/send-glossary", controllers.SendGlossaryHandler)
+	mux.HandleFunc("/api/send-glossary", controllers.SendGlossaryHandler)
 }
