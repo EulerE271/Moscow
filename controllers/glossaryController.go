@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv" // Import strconv package for string conversion
 
 	"russianwords/emailer"
 )
@@ -14,7 +15,8 @@ func SendGlossaryHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var request struct {
-		Email string `json:"email"`
+		Email         string `json:"email"`
+		GlossaryCount string `json:"glossaryCount"` // Keep this as string to initially decode from JSON
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
@@ -22,8 +24,15 @@ func SendGlossaryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Convert GlossaryCount to integer
+	glossaryCount, err := strconv.Atoi(request.GlossaryCount)
+	if err != nil {
+		http.Error(w, "Invalid glossary count", http.StatusBadRequest)
+		return
+	}
+
 	// Trigger the function to send the email with the glossary to the user's email.
-	err := emailer.SendGlossary(request.Email) // Make sure SendMail has the correct signature and parameters.
+	err = emailer.SendGlossary(request.Email, glossaryCount) // Pass integer value here
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return

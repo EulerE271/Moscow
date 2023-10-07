@@ -81,7 +81,7 @@ func SendMail(from string, password string, to []string, subject string, body st
 	return nil
 }
 
-func SendGlossary(email string) error {
+func SendGlossary(email string, glossaryCount int) error {
 	// Fetch required info from environment variables
 	from := os.Getenv("EMAIL_FROM")
 	password := os.Getenv("EMAIL_PASSWORD")
@@ -89,7 +89,7 @@ func SendGlossary(email string) error {
 
 	// Get random glossary entries from TSV file
 	// Define n as per your requirement of number of lines you want to fetch
-	n := 5
+	n := glossaryCount
 	records, err := tsvreader.ReadRandomLines("russianwords.tsv", n)
 	if err != nil {
 		return err // You might handle this error differently in production
